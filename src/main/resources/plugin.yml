@@ -1,0 +1,17 @@
+name: ModGuard
+version: 1.0.1
+main: me.modguard.ModGuard
+api-version: '1.21'
+depend: [packetevents]
+description: Kicks players who join with restricted client mods.
+commands:
+  modguard:
+    description: ModGuard admin command
+    usage: /modguard <reload|check <player>>
+    permission: modguard.admin
+permissions:
+  modguard.admin:
+    default: op
+  modguard.bypass:
+    description: Not checked for restricted mods
+    default: op

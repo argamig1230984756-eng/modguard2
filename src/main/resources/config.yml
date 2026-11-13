@@ -1,0 +1,61 @@
+# ModGuard - kicks players that join with restricted client mods.
+
+# Print every check result to the console (useful for finding the right ids).
+debug: true
+
+# Message shown when kicked. {mods} = detected mods/clients.
+kick-message: "&cThe following mods are disallowed, you must remove them before joining: &f{mods}"
+
+# Seconds after joining before the check starts.
+check-delay-ticks: 15
+
+# Skip Bedrock (Geyser/Floodgate) players.
+skip-bedrock: true
+
+# ---------- Layer 1: client brand ----------
+# If the client's brand contains any of these (case-insensitive) the player is kicked.
+brand-check:
+  enabled: true
+  blocked-brands:
+    - wurst
+    - meteor
+    - impact
+    - aristois
+    - liquidbounce
+    - rusherhack
+    - salhack
+
+# ---------- Layer 2: keybind (translation key) detection ----------
+# Detects installed mods by asking the client to resolve a mod's keybind name.
+# If the mod is installed the client returns the key's label, otherwise it
+# just returns the key id back.
+#
+# FORMAT:  Display name: keybind id
+#
+# To find a mod's keybind id: install the mod on a test client, run it once, then open
+# .minecraft/options.txt and look for lines starting with key_  (the id is what comes
+# after "key_", without the ":key.keyboard..." part).
+# The ids below are EXAMPLES - verify them against the mod versions you want to block.
+keybind-check:
+  enabled: true
+  # keybind = test as keybind, translation = test as language key, both = test both (best)
+  detect-mode: both
+  # Kick if the client does not answer the check at all (can false-positive on lag).
+  kick-on-no-response: false
+  # Re-send the probe this many times before treating it as no response.
+  retries: 1
+  response-timeout-ticks: 80
+  blocked-keybinds:
+    Meteor Client: key.meteor-client.open-gui
+    Wurst Client: key.wurst.zoom
+    Freecam: key.freecam.toggle
+
+# ---------- Layer 1b: plugin channels ----------
+# Mods that register a network channel show up here (substring, case-insensitive).
+# Check what a client registers with: /modguard check <player>
+channel-check:
+  enabled: true
+  blocked-channels:
+    - meteor
+    - wurst
+    - freecam
